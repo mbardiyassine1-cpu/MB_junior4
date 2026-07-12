@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taj Mahal — Restaurant indien à Châteauroux</title>
+<meta name="description" content="Taj Mahal, restaurant indien à Châteauroux (12 Rue Guimon-Latouche). Tandoori, curries, biryanis. Noté 4,9/5 sur Google. Commandez sur Uber Eats.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --marble:#F8F3EA;
+  --marble-deep:#EFE6D6;
+  --sandstone:#8C2F2A;
+  --sandstone-deep:#6E2320;
+  --gold:#B9872E;
+  --gold-light:#D9AE5E;
+  --ink:#301014;
+  --garden:#3E5C46;
+  --white:#FFFFFF;
+  --font-display:"Cormorant Garamond", serif;
+  --font-body:"Work Sans", sans-serif;
+  --font-mono:"IBM Plex Mono", monospace;
+  --radius-s:2px;
+  --radius-m:8px;
+  --container:1180px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--marble);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;margin:0 0 .5em 0;color:var(--sandstone-deep);letter-spacing:.005em;}
+p{margin:0 0 1em 0;}
+.container{max-width:var(--container);margin:0 auto;padding:0 24px;}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.9em;}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}}
+
+.page{display:none;}
+.page.active{display:block;}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(248,243,234,.94);backdrop-filter:blur(8px);border-bottom:1px solid rgba(140,47,42,.15);}
+.nav-inner{max-width:var(--container);margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:var(--font-display);font-size:1.5rem;font-weight:600;color:var(--sandstone-deep);display:flex;align-items:center;gap:10px;letter-spacing:.02em;cursor:pointer;background:none;border:none;padding:0;}
+.nav-logo svg{width:26px;height:26px;flex:none;}
+.nav-links{display:flex;gap:32px;list-style:none;margin:0;padding:0;}
+.nav-links a{font-size:.88rem;font-weight:500;color:var(--ink);position:relative;padding-bottom:4px;cursor:pointer;}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--gold);transition:width .25s ease;}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+.nav-links a.active{color:var(--sandstone);}
+.nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;}
+.nav-toggle span{width:22px;height:2px;background:var(--sandstone-deep);display:block;}
+@media (max-width: 820px){
+  .nav-links{position:fixed;top:56px;left:0;right:0;background:var(--marble);flex-direction:column;gap:0;padding:8px 24px 20px;border-bottom:1px solid rgba(140,47,42,.15);transform:translateY(-130%);transition:transform .3s ease;}
+  .nav-links.open{transform:translateY(0);}
+  .nav-links a{display:block;padding:12px 0;border-bottom:1px solid rgba(140,47,42,.1);}
+  .nav-toggle{display:flex;}
+}
+
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-body);font-weight:600;font-size:.94rem;padding:14px 28px;border-radius:var(--radius-s);border:1px solid transparent;cursor:pointer;transition:transform .2s ease, background .2s ease, color .2s ease;}
+.btn-primary{background:var(--sandstone);color:var(--white);}
+.btn-primary:hover{background:var(--sandstone-deep);transform:translateY(-2px);}
+.btn-outline{background:transparent;border-color:var(--sandstone);color:var(--sandstone-deep);}
+.btn-outline:hover{background:var(--sandstone);color:var(--white);}
+
+.order-float{position:fixed;right:20px;bottom:20px;z-index:200;width:56px;height:56px;border-radius:50%;background:#06C167;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(6,193,103,.4);transition:transform .2s ease;}
+.order-float:hover{transform:scale(1.08);}
+.order-float svg{width:26px;height:26px;fill:#fff;}
+.wa-float{position:fixed;right:20px;bottom:86px;z-index:200;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(37,211,102,.4);transition:transform .2s ease;}
+.wa-float:hover{transform:scale(1.08);}
+.wa-float svg{width:28px;height:28px;fill:#fff;}
+.order-bar{display:flex;align-items:center;gap:14px;background:var(--sandstone-deep);color:var(--white);padding:16px 24px;border-radius:var(--radius-m);flex-wrap:wrap;}
+.order-bar svg{width:26px;height:26px;fill:#fff;flex:none;}
+.order-bar .btn-primary{background:#06C167;}
+.order-bar .btn-primary:hover{background:#059c53;}
+.order-bar .btn-wa{background:#25D366;color:#fff;}
+.order-bar .btn-wa:hover{background:#1fb956;}
+
+.arch-divider{display:flex;justify-content:center;padding:10px 0 34px;}
+.arch-divider svg{width:180px;height:90px;overflow:visible;}
+.arch-path{fill:none;stroke:var(--gold);stroke-width:1.4;stroke-linecap:round;stroke-dasharray:520;stroke-dashoffset:520;transition:stroke-dashoffset 1.6s ease;}
+.arch-divider.drawn .arch-path{stroke-dashoffset:0;}
+.arch-dot{fill:var(--sandstone);opacity:0;transform:scale(.3);transform-origin:center;transition:opacity .5s ease .9s, transform .5s ease .9s;}
+.arch-divider.drawn .arch-dot{opacity:1;transform:scale(1);}
+
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:150px 24px 90px;background:linear-gradient(180deg,#4a1712 0%,#2c0d0b 100%);overflow:hidden;text-align:center;}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 50% 30%, rgba(185,135,46,.16) 0 2px, transparent 2px);background-size:34px 34px;opacity:.5;pointer-events:none;}
+.hero-arch-frame{position:relative;z-index:2;max-width:640px;color:var(--marble);opacity:0;transform:translateY(18px);animation:heroIn 1s ease .3s forwards;}
+@keyframes heroIn{to{opacity:1;transform:translateY(0);}}
+.hero-arch-frame .eyebrow{color:var(--gold-light);}
+.hero-arch-frame h1{color:var(--marble);font-size:clamp(2.8rem, 7vw, 5rem);margin-bottom:.15em;}
+.hero-arch-frame p{color:rgba(248,243,234,.82);max-width:480px;margin:0 auto 1.4em;font-size:1.08rem;}
+.hero-rating{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:.8rem;letter-spacing:.05em;color:var(--gold-light);border:1px solid rgba(217,174,94,.4);padding:8px 18px;border-radius:30px;margin-bottom:2em;}
+.hero-rating svg{width:14px;height:14px;fill:var(--gold-light);}
+.hero-cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.hero-arch-outline{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:min(90vw, 720px);z-index:1;}
+.hero-arch-outline path{stroke-dasharray:1200;stroke-dashoffset:1200;animation:archDraw 2.4s ease .2s forwards;}
+@keyframes archDraw{to{stroke-dashoffset:0;}}
+
+.page-hero{padding:150px 0 64px;background:linear-gradient(180deg,#4a1712 0%,#2c0d0b 100%);color:var(--marble);text-align:center;position:relative;overflow:hidden;}
+.page-hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 50% 30%, rgba(185,135,46,.14) 0 2px, transparent 2px);background-size:30px 30px;opacity:.5;pointer-events:none;}
+.page-hero .container{position:relative;z-index:2;}
+.page-hero h1{color:var(--marble);font-size:clamp(2.2rem,5vw,3.2rem);}
+.page-hero p{color:rgba(248,243,234,.78);max-width:520px;margin:0 auto;}
+.page-hero .eyebrow{color:var(--gold-light);}
+
+.section{padding:88px 0;}
+.section-deep{background:var(--marble-deep);}
+.section-head{max-width:640px;margin:0 auto 46px;text-align:center;}
+.section-head h2{font-size:clamp(1.9rem,3.4vw,2.7rem);}
+.section-head p{color:#5a4340;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+@media (max-width:900px){.grid-3{grid-template-columns:1fr;}.grid-4{grid-template-columns:1fr 1fr;}.grid-2{grid-template-columns:1fr;}}
+@media (max-width:560px){.grid-4{grid-template-columns:1fr;}}
+
+.dish-card{background:var(--white);border-radius:var(--radius-m);overflow:hidden;border:1px solid rgba(140,47,42,.1);transition:transform .3s ease, box-shadow .3s ease;}
+.dish-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(140,47,42,.14);}
+.dish-card img{height:220px;width:100%;object-fit:cover;}
+.dish-card-body{padding:22px 24px 26px;}
+.dish-card-body h3{font-size:1.2rem;margin-bottom:.3em;}
+.dish-card-body p{font-size:.92rem;color:#5c4a47;margin-bottom:.6em;}
+.dish-price{font-family:var(--font-mono);color:var(--sandstone);font-weight:700;font-size:.95rem;}
+
+.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+@media (max-width:900px){.review-grid{grid-template-columns:1fr;}}
+.review-card{background:var(--white);border:1px solid rgba(140,47,42,.1);border-radius:var(--radius-m);padding:26px 24px;display:flex;flex-direction:column;gap:12px;}
+.review-stars{display:flex;gap:3px;}
+.review-stars svg{width:14px;height:14px;fill:var(--gold);}
+.review-card p{font-size:.92rem;color:#4a3735;font-style:italic;margin:0;flex:1;}
+.review-author{font-family:var(--font-mono);font-size:.75rem;color:var(--sandstone-deep);text-transform:uppercase;letter-spacing:.04em;}
+.review-author span{display:block;color:#8a6b66;text-transform:none;letter-spacing:0;margin-top:2px;}
+
+.menu-intro-note{text-align:center;font-size:.85rem;color:#7a615d;max-width:560px;margin:0 auto 40px;}
+.menu-cat{margin-bottom:52px;}
+.menu-cat h3{font-size:1.5rem;border-bottom:1px solid var(--gold);padding-bottom:14px;margin-bottom:20px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
+.menu-cat .cat-note{font-family:var(--font-mono);font-size:.7rem;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;}
+.menu-item{display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px dashed rgba(140,47,42,.16);}
+.menu-item:last-child{border-bottom:none;}
+.menu-item-name{font-weight:600;color:var(--ink);margin-bottom:.2em;}
+.menu-item-desc{font-size:.87rem;color:#6a5652;}
+.menu-item-price{font-family:var(--font-mono);color:var(--sandstone);font-weight:700;white-space:nowrap;align-self:flex-start;}
+.formule-card{background:var(--white);border:1px solid rgba(185,135,46,.3);border-radius:var(--radius-m);padding:24px 26px;margin-bottom:18px;}
+.formule-card h4{margin-bottom:.3em;font-size:1.15rem;color:var(--sandstone-deep);}
+.formule-card .formule-price{font-family:var(--font-mono);color:var(--gold);font-weight:700;font-size:1.05rem;float:right;}
+.formule-card p{font-size:.92rem;color:#5c4a47;margin:0;}
+
+.stat-row{display:flex;gap:44px;flex-wrap:wrap;margin-top:36px;}
+.stat-row div{font-family:var(--font-mono);}
+.stat-row .num{font-size:2rem;color:var(--sandstone-deep);font-weight:700;display:block;}
+.stat-row .lbl{font-size:.76rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;}
+@media (max-width:900px){.contact-grid{grid-template-columns:1fr;}}
+.info-row{display:flex;gap:16px;margin-bottom:26px;}
+.info-row svg{width:22px;height:22px;flex:none;fill:var(--gold);margin-top:3px;}
+.info-row h4{margin-bottom:.2em;font-size:1rem;color:var(--sandstone-deep);}
+.info-row p{margin:0;color:#5c4a47;font-size:.95rem;}
+.map-wrap{border-radius:var(--radius-m);overflow:hidden;height:100%;min-height:360px;border:1px solid rgba(140,47,42,.15);}
+.map-wrap iframe{width:100%;height:100%;border:0;min-height:360px;}
+.contact-card{background:var(--white);border:1px solid rgba(140,47,42,.12);border-radius:var(--radius-m);padding:30px 28px;text-align:center;}
+.contact-card svg{width:34px;height:34px;fill:var(--sandstone);margin-bottom:14px;}
+.contact-card h3{font-size:1.15rem;margin-bottom:.3em;}
+.contact-card p{font-size:.9rem;color:#5c4a47;margin-bottom:1em;}
+.hours-table{width:100%;border-collapse:collapse;margin-top:10px;}
+.hours-table td{padding:10px 0;border-bottom:1px dashed rgba(140,47,42,.15);font-size:.92rem;}
+.hours-table td:first-child{color:var(--sandstone-deep);font-weight:600;}
+.hours-table td:last-child{text-align:right;color:#5c4a47;}
+
+.footer{background:#2c0d0b;color:rgba(248,243,234,.8);padding:56px 0 28px;}
+.footer h4{color:var(--marble);font-family:var(--font-body);font-size:.82rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1em;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:36px;}
+@media (max-width:700px){.footer-grid{grid-template-columns:1fr;}}
+.footer-logo{font-family:var(--font-display);font-size:1.5rem;color:var(--marble);margin-bottom:.4em;}
+.footer a{display:block;padding:5px 0;font-size:.9rem;color:rgba(248,243,234,.72);cursor:pointer;}
+.footer a:hover{color:var(--gold-light);}
+.footer-bottom{border-top:1px solid rgba(248,243,234,.14);padding-top:20px;font-size:.78rem;color:rgba(248,243,234,.5);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="nav-logo" data-page="accueil">
+      <svg viewBox="0 0 24 24"><path fill="#8C2F2A" d="M12 2 C8 6 6 9 6 13 a6 6 0 0 0 12 0 c0-4-2-7-6-11z M12 2 L12 22 M4 22 h16"/></svg>
+      Taj Mahal
+    </button>
+    <ul class="nav-links">
+      <li><a data-page="accueil">Accueil</a></li>
+      <li><a data-page="menu">Menu</a></li>
+      <li><a data-page="localisation">Localisation</a></li>
+      <li><a data-page="contact">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main id="page-accueil" class="page active">
+
+  <section class="hero">
+    <div class="hero-arch-frame">
+      <span class="eyebrow">Châteauroux · Cuisine indienne authentique</span>
+      <h1>Taj Mahal</h1>
+      <p>Tandoori, curries mijotés et biryanis parfumés, au cœur de Châteauroux — dans la petite rue Guimon-Latouche, un accueil qui a fait la réputation de la maison.</p>
+      <div class="hero-rating">
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg>
+        4,9 / 5 — 491 avis Google · N°4 des restaurants à Châteauroux
+      </div>
+      <div class="hero-cta-row">
+        <a href="#" data-order class="btn btn-primary">Commander sur Uber Eats</a>
+        <a href="#" data-whatsapp class="btn btn-outline" style="color:#F8F3EA;border-color:rgba(248,243,234,.5);">Réserver sur WhatsApp</a>
+      </div>
+    </div>
+    <svg class="hero-arch-outline" viewBox="0 0 360 180" preserveAspectRatio="xMidYMax meet">
+      <path fill="none" stroke="rgba(217,174,94,.35)" stroke-width="1.2" d="M20,170 C20,140 40,110 70,100 C50,90 60,60 90,50 C80,30 110,16 180,16 C250,16 280,30 270,50 C300,60 310,90 290,100 C320,110 340,140 340,170"/>
+    </svg>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Notre cuisine</span>
+        <h2>Les épices du nord de l'Inde, cuites au tandoor</h2>
+        <p>Poulet mariné toute une nuit, four en argile chauffé au charbon, sauces mijotées longuement : chaque plat part d'un même souci du détail, avec un accueil chaleureux qui revient dans presque tous les avis des clients.</p>
+      </div>
+      <div class="arch-divider">
+        <svg viewBox="0 0 180 90">
+          <path class="arch-path" d="M10,85 C10,70 20,55 35,50 C25,45 30,30 45,25 C40,15 55,8 90,8 C125,8 140,15 135,25 C150,30 155,45 145,50 C160,55 170,70 170,85"/>
+          <circle class="arch-dot" cx="90" cy="8" r="3.5"/>
+          <circle class="arch-dot" cx="35" cy="50" r="2.6"/>
+          <circle class="arch-dot" cx="145" cy="50" r="2.6"/>
+        </svg>
+      </div>
+      <div class="grid-3">
+        <div class="dish-card reveal">
+          <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?q=80&w=800&auto=format&fit=crop" alt="Poulet tikka grillé au tandoor">
+          <div class="dish-card-body">
+            <h3>Poulet Tikka</h3>
+            <p>Blanc de poulet mariné aux épices puis grillé au tandoor.</p>
+            <span class="dish-price">8,60 €</span>
+          </div>
+        </div>
+        <div class="dish-card reveal">
+          <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=800&auto=format&fit=crop" alt="Biryani Taj Mahal">
+          <div class="dish-card-body">
+            <h3>Biryani Taj Mahal</h3>
+            <p>Poulet, agneau et crevettes, riz mijoté aux épices et herbes indiennes.</p>
+            <span class="dish-price">18,00 €</span>
+          </div>
+        </div>
+        <div class="dish-card reveal">
+          <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop" alt="Seek kabab et naan au tandoor">
+          <div class="dish-card-body">
+            <h3>Seek Kabab</h3>
+            <p>Brochette de viande hachée aux épices, légèrement relevée, cuite au tandoor.</p>
+            <span class="dish-price">7,60 €</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-deep">
+    <div class="container grid-2">
+      <div class="reveal">
+        <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=1000&auto=format&fit=crop" alt="Ambiance du restaurant Taj Mahal" style="border-radius:8px;">
+      </div>
+      <div class="reveal">
+        <span class="eyebrow">L'accueil, avant tout</span>
+        <h2>Le patron accueille toujours avec le sourire</h2>
+        <p>C'est ce que répètent les clients depuis des mois : cocktail de bienvenue offert, service attentionné, patron aux petits soins. Une petite façade dans la rue Guimon-Latouche, et une des tables les mieux notées de Châteauroux.</p>
+        <div class="stat-row">
+          <div><span class="num" data-count-to="4.9" data-decimals="1" data-suffix="/5">0</span><span class="lbl">note Google</span></div>
+          <div><span class="num" data-count-to="491" data-suffix="+">0</span><span class="lbl">avis clients</span></div>
+          <div><span class="num">7j/7</span><span class="lbl">ouvert midi & soir</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Ce que disent les clients</span>
+        <h2>491 avis Google, une constante : l'accueil</h2>
+        <p>Une sélection d'avis publiés sur Google, reformulés ici — l'intégralité est consultable sur la fiche Google du restaurant.</p>
+      </div>
+      <div class="review-grid">
+        <div class="review-card reveal">
+          <div class="review-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg>
+          </div>
+          <p>Un accueil très chaleureux, avec un cocktail de bienvenue offert, et un excellent rapport qualité-prix pour un repas vraiment savoureux.</p>
+          <div class="review-author">gaspard.e <span>25/08/2025 · Google</span></div>
+        </div>
+        <div class="review-card reveal">
+          <div class="review-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg>
+          </div>
+          <p>Caché dans une petite rue de Châteauroux, le Taj Mahal fait voyager les papilles — et tout est servi avec le sourire.</p>
+          <div class="review-author">Sylvie O. <span>18/08/2025 · Google</span></div>
+        </div>
+        <div class="review-card reveal">
+          <div class="review-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg>
+          </div>
+          <p>De passage à moto avec sa fille, un déjeuner improvisé qui s'est révélé être un très bon repas, servi avec beaucoup de gentillesse et à prix correct.</p>
+          <div class="review-author">Sylvain <span>17/09/2025 · Google</span></div>
+        </div>
+        <div class="review-card reveal">
+          <div class="review-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg>
+          </div>
+          <p>Pour ce client, le meilleur restaurant de Châteauroux : personnel extrêmement gentil, service rapide, cuisine généreuse et excellent rapport qualité-prix.</p>
+          <div class="review-author">Franck U. <span>04/10/2025 · Google</span></div>
+        </div>
+        <div class="review-card reveal">
+          <div class="review-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg>
+          </div>
+          <p>Une soirée réussie du début à la fin selon ce client, qui regrette seulement d'habiter à deux heures de route du restaurant.</p>
+          <div class="review-author">Ted <span>30/11/2024 · Google</span></div>
+        </div>
+        <div class="review-card reveal">
+          <div class="review-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.1L12 17.7 5.7 21.3l1.7-7.1L2 9.5l7.1-.6L12 2z"/></svg>
+          </div>
+          <p>Des Normands de passage ont été reçus avec un accueil sans faute, une cuisine savoureuse et un service d'une grande gentillesse.</p>
+          <div class="review-author">Voyageur <span>Avis Tripadvisor</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-deep">
+    <div class="container">
+      <div class="order-bar reveal">
+        <svg viewBox="0 0 24 24"><path d="M7 4V2a1 1 0 012 0v2h6V2a1 1 0 012 0v2h1a2 2 0 012 2v13a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h2zm-2 6v10h14V10H5zm2 3h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z"/></svg>
+        <div>
+          <h3 style="color:#fff;margin-bottom:.15em;">Commandez sur Uber Eats ou réservez sur WhatsApp</h3>
+          <p style="margin:0;color:rgba(248,243,234,.75);font-size:.9rem;">Tous les jours — 12 Rue Guimon-Latouche, Châteauroux.</p>
+        </div>
+        <div style="display:flex;gap:10px;margin-left:auto;flex-wrap:wrap;">
+          <a href="#" data-order class="btn btn-primary">Uber Eats</a>
+          <a href="#" data-whatsapp class="btn btn-primary btn-wa">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<main id="page-menu" class="page">
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Notre carte</span>
+      <h1>Le menu</h1>
+      <p>Tandoori, curries et biryanis préparés à la commande. Livraison et à emporter disponibles via Uber Eats.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:840px;">
+      <div class="arch-divider">
+        <svg viewBox="0 0 180 90">
+          <path class="arch-path" d="M10,85 C10,70 20,55 35,50 C25,45 30,30 45,25 C40,15 55,8 90,8 C125,8 140,15 135,25 C150,30 155,45 145,50 C160,55 170,70 170,85"/>
+          <circle class="arch-dot" cx="90" cy="8" r="3.5"/>
+          <circle class="arch-dot" cx="35" cy="50" r="2.6"/>
+          <circle class="arch-dot" cx="145" cy="50" r="2.6"/>
+        </svg>
+      </div>
+
+      <div class="menu-cat reveal">
+        <h3>Formules</h3>
+        <div class="formule-card"><span class="formule-price">25,50 €</span><h4>Menu conseillé</h4><p>Entrée et plat au choix, naan au fromage, pâtisserie maison, servi avec riz basmati.</p></div>
+        <div class="formule-card"><span class="formule-price">23,50 €</span><h4>Menu végétarien</h4><p>Entrée et plat au choix, servi avec pain nature et pâtisserie maison.</p></div>
+        <div class="formule-card"><span class="formule-price">47,00 €</span><h4>Menu dégustation — 2 personnes</h4><p>Entrées : seek kabab, poisson pakora, poulet tandoori et naans fromage. Plats : poulet massala, agneau korma, palak paneer. Dessert au choix.</p></div>
+        <div class="formule-card"><span class="formule-price">52,00 €</span><h4>Menu Taj Mahal — 2 personnes</h4><p>Entrée, plat et dessert au choix, riz basmati et naan au fromage.</p></div>
+      </div>
+
+      <div class="menu-cat reveal">
+        <h3>Entrées</h3>
+        <div class="menu-item"><div><div class="menu-item-name">Samosa légumes</div><div class="menu-item-desc">Chausson de farine de blé fourré aux légumes</div></div><div class="menu-item-price">6,90 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Samosa viande</div><div class="menu-item-desc">Beignets à l'agneau haché, peu épicé</div></div><div class="menu-item-price">7,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Pakora légumes</div><div class="menu-item-desc">Beignets à la farine de pois chiche, oignons, aubergines, pommes de terre</div></div><div class="menu-item-price">6,00 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Poulet pakora</div><div class="menu-item-desc">Beignets de poulet à la farine de pois chiche</div></div><div class="menu-item-price">7,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Crevettes pakora</div><div class="menu-item-desc">Beignets de crevettes à la farine de pois chiche</div></div><div class="menu-item-price">8,00 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Poisson pakora</div><div class="menu-item-desc">Beignets de poisson à la farine de pois chiche</div></div><div class="menu-item-price">6,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Chicken roll</div><div class="menu-item-desc">Beignets de poulet au fromage</div></div><div class="menu-item-price">7,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Seek kabab</div><div class="menu-item-desc">Brochette de viande hachée aux épices, cuite au tandoor, légèrement épicée</div></div><div class="menu-item-price">7,60 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Poulet tandoori</div><div class="menu-item-desc">Mariné et grillé au tandoor</div></div><div class="menu-item-price">7,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Poulet tikka</div><div class="menu-item-desc">Blanc de poulet mariné dans une sauce puis grillé au tandoor</div></div><div class="menu-item-price">8,60 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Agneau tikka</div><div class="menu-item-desc">Mariné et grillé au tandoor</div></div><div class="menu-item-price">11,00 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Poisson tikka</div><div class="menu-item-desc">Filet de saumon mariné aux épices et cuit au tandoor</div></div><div class="menu-item-price">11,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Gambas</div><div class="menu-item-desc">Marinées dans une sauce puis grillées au tandoor</div></div><div class="menu-item-price">18,00 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Mixte pakora</div><div class="menu-item-desc">Beignets de poulet, poisson, crevettes et légumes — pour 2 personnes</div></div><div class="menu-item-price">18,00 €</div></div>
+      </div>
+
+      <div class="menu-cat reveal">
+        <h3>Salades</h3>
+        <div class="menu-item"><div><div class="menu-item-name">Raïta</div><div class="menu-item-desc">Crudités, yaourt, concombre, tomates et cumin à la façon panjabi</div></div><div class="menu-item-price">6,90 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Salade poulet</div><div class="menu-item-desc">Salade verte, tomates, carottes et poulet grillé</div></div><div class="menu-item-price">9,50 €</div></div>
+      </div>
+
+      <div class="menu-cat reveal">
+        <h3>Plats principaux <span class="cat-note">Prix indicatifs — à confirmer</span></h3>
+        <div class="menu-item"><div><div class="menu-item-name">Poulet massala</div><div class="menu-item-desc">Morceaux de poulet grillés au tandoor, sauce tomate et épices</div></div><div class="menu-item-price">13,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Poulet korma</div><div class="menu-item-desc">Sauce aux amandes, pistaches, noix de cajou et crème fraîche</div></div><div class="menu-item-price">13,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Agneau korma</div><div class="menu-item-desc">Agneau désossé, sauce sucrée aux amandes et pistaches</div></div><div class="menu-item-price">15,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Agneau madras</div><div class="menu-item-desc">Sauce madras légèrement épicée</div></div><div class="menu-item-price">15,00 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Poisson curry</div><div class="menu-item-desc">Sauce curry légèrement épicée</div></div><div class="menu-item-price">15,00 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Crevettes massala</div><div class="menu-item-desc">Crevettes décortiquées, sauce indienne relevée</div></div><div class="menu-item-price">16,50 €</div></div>
+      </div>
+
+      <div class="menu-cat reveal">
+        <h3>Biryanis <span class="cat-note">Prix indicatifs — à confirmer</span></h3>
+        <div class="menu-item"><div><div class="menu-item-name">Murghi biryani</div><div class="menu-item-desc">Poulet et riz mijotés, parfumé d'épices et herbes indiennes</div></div><div class="menu-item-price">14,00 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Khashi biryani</div><div class="menu-item-desc">Agneau et riz mijotés ensemble</div></div><div class="menu-item-price">16,00 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Sobji biryani</div><div class="menu-item-desc">Légumes et riz mijotés ensemble</div></div><div class="menu-item-price">13,00 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Biryani Taj Mahal</div><div class="menu-item-desc">Poulet, agneau, crevettes et riz mijotés, parfumé d'épices et herbes indiennes</div></div><div class="menu-item-price">18,00 €</div></div>
+      </div>
+
+      <div class="menu-cat reveal">
+        <h3>Pains tandoori <span class="cat-note">Prix indicatifs — à confirmer</span></h3>
+        <div class="menu-item"><div><div class="menu-item-name">Naan nature</div><div class="menu-item-desc">Pain levé cuit au tandoor</div></div><div class="menu-item-price">2,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Naan fromage</div><div class="menu-item-desc">Pain levé fourré au fromage</div></div><div class="menu-item-price">3,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Naan à l'ail</div><div class="menu-item-desc">Pain levé à l'ail et à la coriandre</div></div><div class="menu-item-price">3,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Keema naan</div><div class="menu-item-desc">Pain levé fourré à l'agneau</div></div><div class="menu-item-price">4,50 €</div></div>
+      </div>
+
+      <div class="menu-cat reveal">
+        <h3>Plats végétariens <span class="cat-note">Prix indicatifs — à confirmer</span></h3>
+        <div class="menu-item"><div><div class="menu-item-name">Palak paneer</div><div class="menu-item-desc">Fromage frais indien mijoté aux épinards et épices</div></div><div class="menu-item-price">12,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Dall makhani</div><div class="menu-item-desc">Lentilles mijotées à l'indienne</div></div><div class="menu-item-price">11,00 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Aloo gobi</div><div class="menu-item-desc">Pommes de terre et chou-fleur aux épices</div></div><div class="menu-item-price">11,00 €</div></div>
+      </div>
+
+      <div class="menu-cat reveal">
+        <h3>Desserts <span class="cat-note">Prix indicatifs — à confirmer</span></h3>
+        <div class="menu-item"><div><div class="menu-item-name">Kulfi</div><div class="menu-item-desc">Glace indienne au lait, noix de cajou, pistaches et amandes</div></div><div class="menu-item-price">6,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Gulab jamun</div><div class="menu-item-desc">Petits beignets de lait sucrés au sirop parfumé</div></div><div class="menu-item-price">5,50 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Sorbet</div></div><div class="menu-item-price">5,00 €</div></div>
+        <div class="menu-item"><div><div class="menu-item-name">Café / thé masala</div></div><div class="menu-item-price">2,50 €</div></div>
+      </div>
+
+      <p class="menu-intro-note">Carte établie à partir des tarifs communiqués par le restaurant sur Uber Eats. Les catégories marquées « à confirmer » utilisent des prix indicatifs à valider avec le patron avant mise en ligne.</p>
+
+      <div style="text-align:center;margin-top:10px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="#" data-order class="btn btn-primary">Commander sur Uber Eats</a>
+        <a href="#" data-whatsapp class="btn btn-primary btn-wa">Commander sur WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<main id="page-localisation" class="page">
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Nous trouver</span>
+      <h1>Localisation</h1>
+      <p>Une petite rue au cœur de Châteauroux, près du musée Hôtel Bertrand — cherchez la façade discrète, la table est réputée.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-grid">
+      <div class="reveal">
+        <div class="info-row">
+          <svg viewBox="0 0 24 24"><path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg>
+          <div><h4>Adresse</h4><p>12 Rue Guimon-Latouche<br>36000 Châteauroux, France</p></div>
+        </div>
+        <div class="info-row">
+          <svg viewBox="0 0 24 24"><path d="M12 6a1 1 0 011 1v4.6l3.4 2a1 1 0 11-1 1.7l-3.9-2.3A1 1 0 0111 12V7a1 1 0 011-1zm0-4a10 10 0 100 20 10 10 0 000-20z"/></svg>
+          <div><h4>Horaires</h4><p>Tous les jours, 11h45–14h30 et 18h30–23h00</p></div>
+        </div>
+        <div class="info-row">
+          <svg viewBox="0 0 24 24"><path d="M18 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2zM6 4h12v16H6V4zm2 3h8v2H8V7zm0 4h8v2H8v-2z"/></svg>
+          <div><h4>À proximité</h4><p>Parking à moins de 50 m · Gare routière de Châteauroux à environ 470 m · Musée Hôtel Bertrand tout proche</p></div>
+        </div>
+        <div class="info-row">
+          <svg viewBox="0 0 24 24"><path d="M6 3a2 2 0 00-2 2v2c0 8.28 6.72 15 15 15h2a2 2 0 002-2v-3.28a1 1 0 00-.76-.97l-4.28-1.07a1 1 0 00-1.02.27l-1.7 1.7a12.05 12.05 0 01-5.9-5.9l1.7-1.7a1 1 0 00.27-1.02L9.25 3.76A1 1 0 008.28 3H6z"/></svg>
+          <div><h4>Livraison & à emporter</h4><p>Commande possible sur Uber Eats, ou directement par téléphone / WhatsApp pour un retrait sur place.</p></div>
+        </div>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=12+Rue+Guimon-Latouche,+36000+Ch%C3%A2teauroux" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:10px;">Obtenir l'itinéraire</a>
+      </div>
+      <div class="map-wrap reveal">
+        <iframe src="https://www.google.com/maps?q=12+Rue+Guimon-Latouche,+36000+Ch%C3%A2teauroux,+France&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Localisation du restaurant Taj Mahal à Châteauroux"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-deep">
+    <div class="container" style="text-align:center;">
+      <div class="arch-divider">
+        <svg viewBox="0 0 180 90">
+          <path class="arch-path" d="M10,85 C10,70 20,55 35,50 C25,45 30,30 45,25 C40,15 55,8 90,8 C125,8 140,15 135,25 C150,30 155,45 145,50 C160,55 170,70 170,85"/>
+          <circle class="arch-dot" cx="90" cy="8" r="3.5"/>
+          <circle class="arch-dot" cx="35" cy="50" r="2.6"/>
+          <circle class="arch-dot" cx="145" cy="50" r="2.6"/>
+        </svg>
+      </div>
+      <h2>Une réservation avant de passer ?</h2>
+      <p style="max-width:480px;margin:0 auto 24px;">Prévenez-nous sur WhatsApp ou par téléphone, surtout le week-end — la salle se remplit vite.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="#" data-whatsapp class="btn btn-primary btn-wa">Réserver sur WhatsApp</a>
+        <a href="tel:+33987133858" class="btn btn-primary">Appeler le restaurant</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<main id="page-contact" class="page">
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Parlons-en directement</span>
+      <h1>Contact</h1>
+      <p>Un appel, un message WhatsApp, une commande Uber Eats ou Instagram — le restaurant répond vite, tous les jours.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid-4">
+        <div class="contact-card reveal">
+          <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z"/></svg>
+          <h3>Téléphone</h3>
+          <p>Pour réserver une table ou poser une question rapide.</p>
+          <a href="tel:+33987133858" class="btn btn-outline">09 87 13 38 58</a>
+        </div>
+        <div class="contact-card reveal">
+          <svg viewBox="0 0 32 32"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.362.688 4.564 1.875 6.417L4 29l7.771-1.833A11.94 11.94 0 0016.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm6.995 16.964c-.29.816-1.436 1.5-2.354 1.696-.63.13-1.454.234-4.224-.907-3.545-1.462-5.828-5.06-6.006-5.296-.177-.235-1.444-1.92-1.444-3.66 0-1.74.91-2.594 1.234-2.95.323-.354.706-.443.94-.443.235 0 .47.002.675.012.216.01.507-.082.792.605.29.702.985 2.424 1.07 2.6.088.177.146.383.03.618-.117.234-.176.383-.352.588-.176.206-.371.46-.53.618-.177.176-.36.367-.155.72.206.353.914 1.51 1.963 2.446 1.348 1.203 2.485 1.577 2.838 1.753.353.176.559.147.764-.088.206-.235.882-1.03 1.117-1.383.235-.353.47-.294.792-.176.323.117 2.045.964 2.397 1.14.353.176.588.264.675.412.088.147.088.851-.201 1.667z"/></svg>
+          <h3>WhatsApp</h3>
+          <p>Le plus rapide pour réserver ou poser une question.</p>
+          <a href="#" data-whatsapp class="btn btn-outline">Écrire sur WhatsApp</a>
+        </div>
+        <div class="contact-card reveal">
+          <svg viewBox="0 0 24 24"><path d="M7 4V2a1 1 0 012 0v2h6V2a1 1 0 012 0v2h1a2 2 0 012 2v13a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h2zm-2 6v10h14V10H5zm2 3h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z"/></svg>
+          <h3>Uber Eats</h3>
+          <p>Pour commander en ligne, livraison ou à emporter.</p>
+          <a href="#" data-order class="btn btn-outline">Commander sur Uber Eats</a>
+        </div>
+        <div class="contact-card reveal">
+          <svg viewBox="0 0 24 24"><path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2a3 3 0 013 3v10a3 3 0 01-3 3H7a3 3 0 01-3-3V7a3 3 0 013-3h10zm-5 3.5A5.5 5.5 0 1017.5 13 5.5 5.5 0 0012 7.5zm0 2A3.5 3.5 0 118.5 13 3.5 3.5 0 0112 9.5zM18 6a1 1 0 100 2 1 1 0 000-2z"/></svg>
+          <h3>Instagram</h3>
+          <p>Photos des plats, avis clients et actualités du restaurant.</p>
+          <a href="https://instagram.com/tajmahalchtx" target="_blank" rel="noopener" class="btn btn-outline">@tajmahalchtx</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-deep">
+    <div class="container" style="max-width:640px;">
+      <div class="arch-divider">
+        <svg viewBox="0 0 180 90">
+          <path class="arch-path" d="M10,85 C10,70 20,55 35,50 C25,45 30,30 45,25 C40,15 55,8 90,8 C125,8 140,15 135,25 C150,30 155,45 145,50 C160,55 170,70 170,85"/>
+          <circle class="arch-dot" cx="90" cy="8" r="3.5"/>
+          <circle class="arch-dot" cx="35" cy="50" r="2.6"/>
+          <circle class="arch-dot" cx="145" cy="50" r="2.6"/>
+        </svg>
+      </div>
+      <div class="reveal" style="text-align:center;">
+        <span class="eyebrow">Horaires d'ouverture</span>
+        <h2>Ouvert tous les jours</h2>
+        <table class="hours-table" style="max-width:400px;margin:0 auto;">
+          <tr><td>Déjeuner</td><td>11h45 – 14h30</td></tr>
+          <tr><td>Dîner</td><td>18h30 – 23h00</td></tr>
+        </table>
+        <p style="text-align:center;margin-top:20px;font-size:.85rem;color:#8a6b66;">Réservation conseillée le week-end.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="order-bar reveal" style="background:var(--sandstone-deep);">
+        <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z"/></svg>
+        <div>
+          <h3 style="color:#fff;margin-bottom:.15em;">Une question sur un plat, une allergie, un groupe ?</h3>
+          <p style="margin:0;color:rgba(248,243,234,.75);font-size:.9rem;">WhatsApp ou téléphone — réponse rapide, tous les jours.</p>
+        </div>
+        <div style="display:flex;gap:10px;margin-left:auto;flex-wrap:wrap;">
+          <a href="#" data-whatsapp class="btn btn-primary btn-wa">WhatsApp</a>
+          <a href="tel:+33987133858" class="btn btn-primary" style="background:var(--sandstone);">Appeler</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">Taj Mahal</div>
+        <p style="max-width:320px;font-size:.9rem;">Restaurant indien — 12 Rue Guimon-Latouche, 36000 Châteauroux.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <a data-page="menu">Menu</a>
+        <a data-page="localisation">Localisation</a>
+        <a data-page="contact">Contact</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="#" data-whatsapp>WhatsApp</a>
+        <a href="#" data-order>Commander sur Uber Eats</a>
+        <a href="tel:+33987133858">09 87 13 38 58</a>
+        <a href="https://instagram.com/tajmahalchtx" target="_blank" rel="noopener">Instagram @tajmahalchtx</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Taj Mahal — Tous droits réservés</span>
+      <span>Châteauroux, France</span>
+    </div>
+  </div>
+</footer>
+
+<a href="#" data-whatsapp class="wa-float" aria-label="Contacter sur WhatsApp">
+  <svg viewBox="0 0 32 32"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.362.688 4.564 1.875 6.417L4 29l7.771-1.833A11.94 11.94 0 0016.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm6.995 16.964c-.29.816-1.436 1.5-2.354 1.696-.63.13-1.454.234-4.224-.907-3.545-1.462-5.828-5.06-6.006-5.296-.177-.235-1.444-1.92-1.444-3.66 0-1.74.91-2.594 1.234-2.95.323-.354.706-.443.94-.443.235 0 .47.002.675.012.216.01.507-.082.792.605.29.702.985 2.424 1.07 2.6.088.177.146.383.03.618-.117.234-.176.383-.352.588-.176.206-.371.46-.53.618-.177.176-.36.367-.155.72.206.353.914 1.51 1.963 2.446 1.348 1.203 2.485 1.577 2.838 1.753.353.176.559.147.764-.088.206-.235.882-1.03 1.117-1.383.235-.353.47-.294.792-.176.323.117 2.045.964 2.397 1.14.353.176.588.264.675.412.088.147.088.851-.201 1.667z"/></svg>
+</a>
+<a href="#" data-order class="order-float" aria-label="Commander sur Uber Eats">
+  <svg viewBox="0 0 24 24"><path fill="#fff" d="M7 4V2a1 1 0 012 0v2h6V2a1 1 0 012 0v2h1a2 2 0 012 2v13a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h2zm-2 6v10h14V10H5zm2 3h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z"/></svg>
+</a>
+
+<script>
+// Lien de la fiche Uber Eats du restaurant — à vérifier/mettre à jour avec le patron
+const UBER_EATS_URL = "https://www.ubereats.com/fr-en/store/taj-mahal/HzrfntYbQ7mz2NFH6UKsYw";
+// Numéro WhatsApp — 09 87 13 38 58 -> +33 9 87 13 38 58 -> 33987133858
+const WHATSAPP_NUMBER = "33987133858";
+const WHATSAPP_MESSAGE = "Bonjour Taj Mahal, je souhaite réserver une table / passer une commande.";
+
+document.addEventListener("DOMContentLoaded", () => {
+  wireOrderLinks();
+  wireWhatsAppLinks();
+  wireNavToggle();
+  wirePageNav();
+  wireArchDividers();
+  wireRevealOnScroll();
+  wireCountUp();
+  showPage("accueil", false);
+});
+
+function wireOrderLinks() {
+  document.querySelectorAll("[data-order]").forEach((el) => {
+    el.setAttribute("href", UBER_EATS_URL);
+    el.setAttribute("target", "_blank");
+    el.setAttribute("rel", "noopener");
+  });
+}
+
+function wireWhatsAppLinks() {
+  const link = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+  document.querySelectorAll("[data-whatsapp]").forEach((el) => {
+    el.setAttribute("href", link);
+    el.setAttribute("target", "_blank");
+    el.setAttribute("rel", "noopener");
+  });
+}
+
+function wireNavToggle() {
+  const toggle = document.querySelector(".nav-toggle");
+  const links = document.querySelector(".nav-links");
+  if (!toggle || !links) return;
+  toggle.addEventListener("click", () => links.classList.toggle("open"));
+}
+
+function wirePageNav() {
+  document.querySelectorAll("[data-page]").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      showPage(el.getAttribute("data-page"));
+      document.querySelector(".nav-links")?.classList.remove("open");
+    });
+  });
+  window.addEventListener("hashchange", () => {
+    const id = location.hash.replace("#", "") || "accueil";
+    showPage(id, false);
+  });
+}
+
+function showPage(id, updateHash = true) {
+  const target = document.getElementById("page-" + id);
+  if (!target) return;
+  document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+  target.classList.add("active");
+  document.querySelectorAll(".nav-links a").forEach((a) => {
+    a.classList.toggle("active", a.getAttribute("data-page") === id);
+  });
+  if (updateHash) history.pushState(null, "", "#" + id);
+  window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  wireArchDividers();
+  wireRevealOnScroll();
+  wireCountUp();
+}
+
+function wireArchDividers() {
+  document.querySelectorAll(".arch-divider:not([data-observed])").forEach((d) => {
+    d.setAttribute("data-observed", "1");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("drawn");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    io.observe(d);
+  });
+}
+
+function wireRevealOnScroll() {
+  document.querySelectorAll(".reveal:not([data-observed])").forEach((el) => {
+    el.setAttribute("data-observed", "1");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    io.observe(el);
+  });
+}
+
+function wireCountUp() {
+  document.querySelectorAll("[data-count-to]:not([data-counted])").forEach((el) => {
+    el.setAttribute("data-counted", "1");
+    const target = parseFloat(el.getAttribute("data-count-to"));
+    const decimals = parseInt(el.getAttribute("data-decimals") || "0", 10);
+    const suffix = el.getAttribute("data-suffix") || "";
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          io.unobserve(entry.target);
+          const duration = 1200;
+          const start = performance.now();
+          function tick(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const value = target * eased;
+            el.textContent = value.toFixed(decimals) + suffix;
+            if (progress < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        }
+      });
+    }, { threshold: 0.4 });
+    io.observe(el);
+  });
+}
+</script>
+</body>
+</html>
